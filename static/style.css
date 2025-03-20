@@ -1,0 +1,131 @@
+:root {
+    --cor-primaria: #1E90FF; /* Azul vibrante para botões e destaques */
+    --cor-primaria-hover: #187bcd; /* Azul mais escuro no hover */
+    --cor-secundaria: #28a745; /* Verde para ações de sucesso */
+    --cor-secundaria-hover: #218838; /* Verde escuro no hover */
+    --cor-texto: #333333; /* Texto em cinza escuro para boa legibilidade */
+    --cor-borda: #d1d3e2; /* Borda suave em cinza claro */
+    --cor-fundo: #f8f9fa; /* Fundo suave para toda a página */
+    --cor-container: #ffffff; /* Fundo branco para o conteúdo principal */
+    --cor-fieldset: #e9ecef; /* Fundo claro para fieldsets */
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+    font-size: 1rem;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    max-width: 100%;
+    width: 960px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: var(--cor-container);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: var(--cor-texto);
+    margin-bottom: 1rem;
+}
+
+fieldset {
+    border: 2px solid var(--cor-borda);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    background-color: var(--cor-fieldset);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+legend {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+}
+
+button {
+    border-radius: 50px;
+    padding: 10px;
+    font-weight: bold;
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    transition: transform 0.2s ease-out, background-color 0.3s ease;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background-color: var(--cor-primaria-hover);
+}
+
+button:focus {
+    outline: none;
+}
+
+button#finalizar-selecao {
+    background-color: var(--cor-secundaria);
+}
+
+button#finalizar-selecao:hover {
+    background-color: var(--cor-secundaria-hover);
+}
+
+footer {
+    margin-top: 3rem;
+    padding: 1rem 0;
+    font-size: 1rem;
+    color: var(--cor-borda);
+    text-align: center;
+}
+
+footer a {
+    color: var(--cor-texto);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+        box-shadow: none;
+    }
+
+    footer {
+        font-size: 0.9rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    button {
+        font-size: 1rem;
+    }
+}
