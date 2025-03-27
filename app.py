@@ -1,41 +1,56 @@
 import os
+import sqlite3
 import pandas as pd
-import chardet
 from flask import Flask, render_template, request, jsonify, send_file
 from fpdf import FPDF
 
 app = Flask(__name__)
 PDF_PATH = "solicitacao_material.pdf"
 
-def pesquisar_codigo_por_trechos_descricao(nome_arquivo, termos):
-    caminho_arquivo = os.path.join('data', nome_arquivo)
+def pesquisar_codigo_por_trechos_descricao(nome_arquivo_db, termos):
+    caminho_arquivo_db = os.path.join('data', nome_arquivo_db)
 
-    if not os.path.exists(caminho_arquivo):
-        return jsonify({'error': 'Arquivo CSV não encontrado.'}), 404
+    if not os.path.exists(caminho_arquivo_db):
+        return jsonify({'error': 'Banco de dados não encontrado.'}), 404
 
     try:
-        with open(caminho_arquivo, 'rb') as f:
-            result = chardet.detect(f.read())
-            encoding = result['encoding']
-        df = pd.read_csv(caminho_arquivo, sep=';', encoding=encoding, dtype={'Codigo': str})
-    except Exception as e:
-        return jsonify({'error': f'Erro ao ler o CSV: {e}'}), 500
+        # Conecta ao banco de dados SQLite
+        conn = sqlite3.connect(caminho_arquivo_db)
+        cursor = conn.cursor()
 
-    if 'Codigo' not in df.columns or 'Descricao' not in df.columns:
-        return jsonify({'error': 'O arquivo CSV deve conter colunas "Codigo" e "Descricao".'}), 500
+        # Certifique-se de que a tabela 'materiais' existe
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='materiais'")
+        if cursor.fetchone() is None:
+            return jsonify({'error': 'Tabela "materiais" não encontrada no banco de dados.'}), 500
 
-    resultados = df.copy()
-    for termo in termos:
-        resultados = resultados[
-            resultados['Descricao'].str.lower().str.contains(termo, na=False) |
-            resultados['Codigo'].str.contains(termo, na=False)
-        ]
-    
-    return resultados
+        # Cria a consulta SQL para buscar os materiais que correspondem aos termos
+        query = "SELECT Codigo, Descricao FROM materiais WHERE"
+        query += " AND ".join([f" LOWER(Descricao) LIKE ?" for _ in termos])
+
+        parametros = [f"%{termo}%" for termo in termos]
+
+        # Executa a consulta
+        cursor.execute(query, parametros)
+
+        # Recupera os resultados
+        resultados = cursor.fetchall()
+
+        # Fechar a conexão com o banco de dados
+        conn.close()
+
+        if resultados:
+            return pd.DataFrame(resultados, columns=["Codigo", "Descricao"])
+        else:
+            return pd.DataFrame()  # Se não houver resultados, retorna um DataFrame vazio
+
+    except sqlite3.Error as e:
+        return jsonify({'error': f'Erro ao consultar o banco de dados: {e}'}), 500
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/pesquisar', methods=['POST'])
 def pesquisar():
@@ -44,14 +59,15 @@ def pesquisar():
         return jsonify({'error': 'Por favor, insira um termo de pesquisa válido.'}), 400
     
     termos_pesquisa = termos_pesquisa.split()
-    nome_arquivo_csv = "feed.csv" 
-    resultados = pesquisar_codigo_por_trechos_descricao(nome_arquivo_csv, termos_pesquisa)
+    nome_arquivo_db = "materiais.db"  # Banco de dados SQLite
+    resultados = pesquisar_codigo_por_trechos_descricao(nome_arquivo_db, termos_pesquisa)
 
     if isinstance(resultados, tuple):  # Verifica se houve um erro na função
         return resultados  # Retorna a resposta de erro
 
     materials = resultados.to_dict(orient='records')
     return jsonify(materials)
+
 
 @app.route('/finalizar', methods=['POST'])
 def finalizar():
@@ -110,11 +126,13 @@ def finalizar():
     
     return jsonify({'message': 'PDF gerado com sucesso.'})
 
+
 @app.route('/baixar_pdf', methods=['GET'])
 def baixar_pdf():
     if os.path.exists(PDF_PATH):
         return send_file(PDF_PATH, as_attachment=True)
     return jsonify({'error': 'Arquivo PDF não encontrado.'}), 404
+
 
 if __name__ == '__main__':
     app.run(debug=True)
