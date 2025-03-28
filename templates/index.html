@@ -9,9 +9,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    
+    <header>
+        <img src="/static/imag/logosemfundo.png" alt="Imagem do Cabeçalho">
+        <h1 class="text-center mb-4 text-primary">Solicitação de Materiais</h1>
+    </header>
+    
     <div class="container mt-5">
-        <h1 class="text-center mb-4 text-primary">Solicitação de Materiais</h1></header>
-
+        
         <form id="solicitacao-form">
             <!-- Informações do Solicitante -->
             <fieldset class="p-4 border rounded shadow-sm mb-4">
@@ -89,7 +94,7 @@
                     <input type="text" id="material" name="material" class="form-control" autocomplete="off" required>
                     <div id="resultados" class="mt-3"></div>
                 </div>
-           
+
                 <button type="button" id="pesquisar-material" class="btn btn-primary w-100">Pesquisar</button>
            
             </fieldset>

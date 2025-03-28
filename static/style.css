@@ -14,18 +14,34 @@ body {
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
     line-height: 1.6;
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    padding: 10px;
+}
+
+header img {
+    width: 280px; 
+    height: auto; 
+    margin-bottom: 20px; 
+}
+
+
 .container {
     max-width: 100%;
-    width: 960px;
+    width: 900px;
     margin: 0 auto;
-    padding: 30px;
+    padding: 20px;
     background-color: var(--cor-container);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
@@ -83,10 +99,10 @@ button#finalizar-selecao:hover {
 }
 
 footer {
-    margin-top: 3rem;
+    margin-top: 2rem;
     padding: 1rem 0;
-    font-size: 1rem;
-    color: var(--cor-borda);
+    font-size: 1.2rem;
+    color: black;
     text-align: center;
 }
 
