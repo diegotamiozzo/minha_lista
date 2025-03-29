@@ -15,7 +15,8 @@ $(document).ready(function() {
             } else {
                 data.forEach(function(item) {
                     resultadosHtml += `
-                        <div class="d-flex justify-content-between align-items-center border p-2">
+                        <div class="d-flex justify-content-between align-items-center border p-2 item-lista" 
+                             data-codigo="${item.Codigo}" data-descricao="${item.Descricao}">
                             <span>${item.Codigo} - ${item.Descricao}</span>
                             <button type="button" class="btn btn-sm btn-success adicionar-item" 
                                 data-codigo="${item.Codigo}" data-descricao="${item.Descricao}">
@@ -58,6 +59,7 @@ $(document).ready(function() {
                         <option value="m">m</option>
                         <option value="kg">kg</option>
                         <option value="L">L</option>
+                        <option value="L">Outros</option>
                     </select>
                 </div>
                 <input type="hidden" name="itens_codigo" value="${codigo}">
@@ -65,13 +67,21 @@ $(document).ready(function() {
             </div>
         `);
 
-        $('#material').val('');
-        $('#resultados').html('');
+        // **Destaque o item já selecionado na lista**
+        $(this).closest('.item-lista').addClass('bg-light text-muted').find('.adicionar-item').prop('disabled', true);
+
     });
 
     // Remover item da lista de itens selecionados
     $(document).on('click', '.remover-item', function() {
-        $(this).closest('div').fadeOut(300, function() { $(this).remove(); });
+        const itemDiv = $(this).closest('.border.p-2.mb-2');
+        const codigo = itemDiv.find('input[name="itens_codigo"]').val();
+
+        // **Reativar na lista de pesquisa**
+        $(`#resultados .item-lista[data-codigo="${codigo}"]`).removeClass('bg-light text-muted')
+            .find('.adicionar-item').prop('disabled', false);
+
+        itemDiv.fadeOut(300, function() { $(this).remove(); });
     });
 
     // Enviar o formulário para gerar o PDF
@@ -107,8 +117,17 @@ $(document).ready(function() {
         }, 1000);
     });
 
-    // Garantir que o botão "Finalizar Seleção" funcione mesmo sem pesquisa de material
-    $('#finalizar-selecao').click(function() {
-        $('#solicitacao-form').submit();
-    });
+// Garantir que o botão "Finalizar Seleção" funcione mesmo sem pesquisa de material
+$('#finalizar-selecao').click(function() {
+    $('#solicitacao-form').submit();
+
+    // Limpar os resultados da pesquisa
+    $('#resultados').empty();
+
+    // Limpar o campo de entrada do material com um pequeno atraso
+    setTimeout(function() {
+        $('#material').val('');
+    }, 50);
+});
+
 });
