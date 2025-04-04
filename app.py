@@ -4,14 +4,15 @@ import pandas as pd
 from flask import Flask, render_template, request, jsonify, send_file
 from fpdf import FPDF
 from datetime import datetime
+from pytz import timezone 
 
 app = Flask(__name__)
 PDF_DIR = "pdfs"  # Diretório onde os PDFs serão salvos
 os.makedirs(PDF_DIR, exist_ok=True)  # Garante que a pasta exista
 
 def gerar_nome_pdf():
-    timestamp = datetime.now().strftime("%d-%m-%y_%Hh%Mmin")
-
+    fuso_brasilia = timezone('America/Sao_Paulo')
+    timestamp = datetime.now(fuso_brasilia).strftime("%d-%m-%Y_%Hh%Mmin")
     return os.path.join(PDF_DIR, f"lista_{timestamp}.pdf")
 
 def pesquisar_codigo_por_trechos_descricao(nome_arquivo_db, termos):
