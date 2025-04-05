@@ -1,13 +1,13 @@
 :root {
-    --cor-primaria: #1E90FF; /* Azul vibrante para botões e destaques */
-    --cor-primaria-hover: #187bcd; /* Azul mais escuro no hover */
-    --cor-secundaria: #28a745; /* Verde para ações de sucesso */
-    --cor-secundaria-hover: #218838; /* Verde escuro no hover */
-    --cor-texto: #333333; /* Texto em cinza escuro para boa legibilidade */
-    --cor-borda: #d1d3e2; /* Borda suave em cinza claro */
-    --cor-fundo: #f8f9fa; /* Fundo suave para toda a página */
-    --cor-container: #ffffff; /* Fundo branco para o conteúdo principal */
-    --cor-fieldset: #e9ecef; /* Fundo claro para fieldsets */
+    --cor-primaria: #1E90FF; 
+    --cor-primaria-hover: #187bcd;
+    --cor-secundaria: #28a745;
+    --cor-secundaria-hover: #218838;
+    --cor-texto: #333333;
+    --cor-borda: #d1d3e2;
+    --cor-fundo: #f8f9fa;
+    --cor-container: #ffffff;
+    --cor-fieldset: #e9ecef;
 }
 
 body {
@@ -19,6 +19,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
 }
 
 header {
@@ -36,7 +37,6 @@ header img {
     margin-bottom: 5px; 
 }
 
-
 .container {
     max-width: 100%;
     width: 900px;
@@ -45,6 +45,7 @@ header img {
     background-color: var(--cor-container);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
+    transition: box-shadow 0.3s ease; 
 }
 
 h1 {
@@ -60,7 +61,7 @@ fieldset {
     border-radius: 10px;
     margin-bottom: 1.5rem;
     background-color: var(--cor-fieldset);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
 }
 
 legend {
@@ -72,8 +73,9 @@ legend {
 
 button {
     border-radius: 50px;
-    padding: 10px;
+    padding: 10px 20px; 
     font-weight: bold;
+    font-size: 1rem;
     background-color: var(--cor-primaria);
     color: white;
     border: none;
@@ -82,12 +84,13 @@ button {
 }
 
 button:hover {
-    transform: scale(1.02);
+    transform: scale(1.02); /* levemente mais responsivo */
     background-color: var(--cor-primaria-hover);
 }
 
 button:focus {
-    outline: none;
+    outline: 2px dashed #555; /* melhora acessibilidade para quem navega com teclado */
+    outline-offset: 4px;
 }
 
 button#finalizar-selecao {
@@ -98,20 +101,24 @@ button#finalizar-selecao:hover {
     background-color: var(--cor-secundaria-hover);
 }
 
-/* Estilo para campos obrigatórios com erro */
-input.border-danger,
-select.border-danger {
-    border: 2px solid #dc3545 !important; /* Vermelho Bootstrap */
-    background-color: #fff5f5;
-    box-shadow: 0 0 5px rgba(220, 53, 69, 0.4);
-}
-
-/* Suaviza a transição ao corrigir o campo */
 input,
 select {
     transition: border 0.3s ease, box-shadow 0.3s ease;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--cor-borda);
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* Estilo para campos obrigatórios com erro */
+input.border-danger,
+select.border-danger {
+    border: 2px solid #dc3545 !important;
+    background-color: #fff5f5;
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.4);
+}
 
 footer {
     margin-top: 2rem;
@@ -158,5 +165,6 @@ footer a:hover {
 
     button {
         font-size: 1rem;
+        width: 100%; 
     }
 }
