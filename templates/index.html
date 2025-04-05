@@ -53,6 +53,7 @@
                     <label for="hora_retirada" class="form-label">Hora:</label>
                     <select id="hora_retirada" name="hora_retirada" class="form-control" required>
                         <!-- Opções de 06:00 até 19:30, com intervalos de 30 minutos -->
+                        <option value="" hidden>Selecione a hora da retirada</option>
                         <option value="06:00">06:00</option>
                         <option value="06:30">06:30</option>
                         <option value="07:00">07:00</option>
@@ -82,8 +83,7 @@
                         <option value="19:00">19:00</option>
                         <option value="19:30">19:30</option>
                     </select>
-                </div>
-                
+                </div>               
             </fieldset>
 
             <!-- Pesquisa de Material -->
@@ -91,13 +91,15 @@
                 <legend class="fw-bold text-primary">Pesquisar Material</legend>
                 <div class="mb-3">
                     <label for="material" class="form-label">Digite o material desejado:</label>
-                    <input type="text" id="material" name="material" class="form-control" autocomplete="off" required>
-                    <div id="resultados" class="mt-3"></div>
+                    <input type="text" id="material" name="material" class="form-control" autocomplete="off">
                 </div>
-
-                <button type="button" id="pesquisar-material" class="btn btn-primary w-100">Pesquisar</button>
-           
+                <div class="d-flex gap-2">
+                    <button type="button" id="pesquisar-material" class="btn btn-primary w-50">Pesquisar</button>
+                    <button type="button" id="limpar-material" class="btn btn-primary w-50">Limpar Pesquisa</button>
+                </div>
+                <div id="resultados" class="mt-3"></div>
             </fieldset>
+
             <!-- Itens Selecionados -->
             <fieldset class="p-4 border rounded shadow-sm mb-4">
                 <legend class="fw-bold text-primary">Itens Selecionados</legend>
@@ -106,10 +108,8 @@
             </fieldset>
 
           <!-- Botão para Baixar PDF - inicialmente escondido -->
-          <button type="button" id="baixar-pdf" class="btn btn-info w-100" style="display:none;">Baixar PDF</button>
-
+          <button type="button" id="baixar-pdf" class="btn btn-success w-100" style="display:none;">Baixar PDF</button>
         </form>
-
     </div>
 
     <!-- Modal de Confirmação -->

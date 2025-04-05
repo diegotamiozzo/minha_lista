@@ -27,13 +27,13 @@ header {
     justify-content: center; 
     align-items: center; 
     text-align: center; 
-    padding: 10px;
+    padding: 5px;
 }
 
 header img {
     width: 280px; 
     height: auto; 
-    margin-bottom: 20px; 
+    margin-bottom: 5px; 
 }
 
 
@@ -82,7 +82,7 @@ button {
 }
 
 button:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     background-color: var(--cor-primaria-hover);
 }
 
@@ -97,6 +97,21 @@ button#finalizar-selecao {
 button#finalizar-selecao:hover {
     background-color: var(--cor-secundaria-hover);
 }
+
+/* Estilo para campos obrigatórios com erro */
+input.border-danger,
+select.border-danger {
+    border: 2px solid #dc3545 !important; /* Vermelho Bootstrap */
+    background-color: #fff5f5;
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.4);
+}
+
+/* Suaviza a transição ao corrigir o campo */
+input,
+select {
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
 
 footer {
     margin-top: 2rem;
