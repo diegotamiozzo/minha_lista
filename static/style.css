@@ -5,9 +5,9 @@
     --cor-secundaria-hover: #218838;
     --cor-texto: #333333;
     --cor-borda: #d1d3e2;
-    --cor-fundo: #f8f9fa;
+    --cor-fundo: #faf8f8;
     --cor-container: #ffffff;
-    --cor-fieldset: #e9ecef;
+    --cor-fieldset: #e6e9f8;
 }
 
 body {
@@ -64,6 +64,21 @@ fieldset {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
 }
 
+#resultados {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 2px solid var(--cor-borda);
+    background-color: var(--cor-container);
+    border-radius: 6px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    visibility: hidden;
+}
+
+#resultados:not(:empty) {
+    visibility: visible;
+}
+
 legend {
     font-weight: 600;
     color: #495057;
@@ -84,12 +99,12 @@ button {
 }
 
 button:hover {
-    transform: scale(1.02); /* levemente mais responsivo */
+    transform: scale(1.02); 
     background-color: var(--cor-primaria-hover);
 }
 
 button:focus {
-    outline: 2px dashed #555; /* melhora acessibilidade para quem navega com teclado */
+    outline: 2px dashed #555; 
     outline-offset: 4px;
 }
 
