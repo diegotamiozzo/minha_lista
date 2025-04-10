@@ -1,19 +1,26 @@
 import os
+import re
 import sqlite3
 import pandas as pd
 from flask import Flask, render_template, request, jsonify, send_file
 from fpdf import FPDF
 from datetime import datetime
-from pytz import timezone 
+from pytz import timezone
 
 app = Flask(__name__)
 PDF_DIR = "pdfs"  # Diretório onde os PDFs serão salvos
 os.makedirs(PDF_DIR, exist_ok=True)  # Garante que a pasta exista
 
-def gerar_nome_pdf():
+def gerar_nome_pdf(ordem_servico, cliente):
     fuso_brasilia = timezone('America/Sao_Paulo')
-    timestamp = datetime.now(fuso_brasilia).strftime("%d-%m-%Y_%Hh%Mmin")
-    return os.path.join(PDF_DIR, f"lista_{timestamp}.pdf")
+    timestamp = datetime.now(fuso_brasilia).strftime("%d-%m-%Y_%Hh%M")
+    
+    # Sanitiza os nomes e força cliente para minúsculas
+    ordem_servico = re.sub(r'[^\w\-]', '_', ordem_servico.strip())
+    cliente = re.sub(r'[^\w\-]', '_', cliente.strip().lower())
+
+    nome_arquivo = f"{ordem_servico}_{cliente}_{timestamp}.pdf"
+    return os.path.join(PDF_DIR, nome_arquivo)
 
 def pesquisar_codigo_por_trechos_descricao(nome_arquivo_db, termos):
     caminho_arquivo_db = os.path.join('data', nome_arquivo_db)
@@ -61,8 +68,10 @@ def finalizar():
     materiais_selecionados_descricao = request.form.getlist('itens_descricao')
     materiais_selecionados_quantidade = request.form.getlist('itens_quantidade')
     materiais_selecionados_unidade = request.form.getlist('itens_unidade')
+
     if not materiais_selecionados_codigo:
         return jsonify({'error': 'Nenhum item selecionado.'}), 400
+
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -75,6 +84,7 @@ def finalizar():
     pdf.cell(200, 10, txt=f"Data da Retirada: {data_retirada}", ln=True)
     pdf.cell(200, 10, txt=f"Hora da Retirada: {hora_retirada}", ln=True)
     pdf.ln(10)
+
     pdf.set_font("Arial", style='B', size=12)
     pdf.cell(20, 10, txt="Cód.", border=1, align='C')
     pdf.cell(145, 10, txt="Descrição", border=1, align='C')
@@ -82,23 +92,29 @@ def finalizar():
     pdf.cell(15, 10, txt="Uni.", border=1, align='C')
     pdf.ln()
     pdf.set_font("Arial", size=10)
+
     for codigo, descricao, quantidade, unidade in zip(materiais_selecionados_codigo, materiais_selecionados_descricao, materiais_selecionados_quantidade, materiais_selecionados_unidade):
         pdf.cell(20, 10, txt=codigo, border=1, align='C')
         pdf.cell(145, 10, txt=descricao, border=1, align='L')
         pdf.cell(15, 10, txt=quantidade, border=1, align='C')
         pdf.cell(15, 10, txt=unidade, border=1, align='C')
         pdf.ln()
+
+    # Remove PDFs antigos (opcional)
     for arquivo in os.listdir(PDF_DIR):
         caminho_arquivo = os.path.join(PDF_DIR, arquivo)
-        if arquivo.startswith("lista_") and arquivo.endswith(".pdf"):
+        if arquivo.endswith(".pdf"):
             os.remove(caminho_arquivo)
-    pdf_path = gerar_nome_pdf()
+
+    # Salva o novo PDF com nome personalizado
+    pdf_path = gerar_nome_pdf(ordem_servico, cliente)
     pdf.output(pdf_path)
+
     return jsonify({'message': 'PDF gerado com sucesso.', 'pdf_path': pdf_path})
 
 @app.route('/baixar_pdf', methods=['GET'])
 def baixar_pdf():
-    arquivos = sorted([f for f in os.listdir(PDF_DIR) if f.startswith("lista_") and f.endswith(".pdf")], reverse=True)
+    arquivos = sorted([f for f in os.listdir(PDF_DIR) if f.endswith(".pdf")], reverse=True)
     if arquivos:
         return send_file(os.path.join(PDF_DIR, arquivos[0]), as_attachment=True)
     return jsonify({'error': 'Arquivo PDF não encontrado.'}), 404

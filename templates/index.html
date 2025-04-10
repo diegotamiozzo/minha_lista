@@ -52,7 +52,6 @@
                 <div class="mb-3">
                     <label for="hora_retirada" class="form-label">Hora:</label>
                     <select id="hora_retirada" name="hora_retirada" class="form-control" required>
-                        <!-- Opções de 06:00 até 19:30, com intervalos de 30 minutos -->
                         <option value="" hidden>Selecione a hora da retirada</option>
                         <option value="06:00">06:00</option>
                         <option value="06:30">06:30</option>
@@ -82,6 +81,7 @@
                         <option value="18:30">18:30</option>
                         <option value="19:00">19:00</option>
                         <option value="19:30">19:30</option>
+
                     </select>
                 </div>               
             </fieldset>
@@ -89,14 +89,23 @@
             <!-- Pesquisa de Material -->
             <fieldset class="p-4 border rounded shadow-sm mb-4">
                 <legend class="fw-bold text-primary">Pesquisar Material</legend>
-                <div class="mb-3">
+                
+                <div class="d-flex justify-content-between align-items-center mb-2">
                     <label for="material" class="form-label">Digite o material desejado:</label>
+                    <button type="button" class="btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAjudaMaterial">
+                        Como Pesquisar?
+                    </button>
+                </div>
+                
+                <div class="mb-3">
                     <input type="text" id="material" name="material" class="form-control" autocomplete="off">
                 </div>
+                
                 <div class="d-flex gap-2">
                     <button type="button" id="pesquisar-material" class="btn btn-primary w-50">Pesquisar</button>
                     <button type="button" id="limpar-material" class="btn btn-primary w-50">Limpar</button>
                 </div>
+                
                 <div id="resultados" class="mt-3"></div>
             </fieldset>
 
@@ -107,8 +116,8 @@
                 <button type="button" id="finalizar-selecao" class="btn btn-success w-100">Finalizar Seleção</button>
             </fieldset>
 
-          <!-- Botão para Baixar PDF - inicialmente escondido -->
-          <button type="button" id="baixar-pdf" class="btn btn-success w-100" style="display:none;">Baixar PDF</button>
+            <!-- Botão para Baixar PDF -->
+            <button type="button" id="baixar-pdf" class="btn btn-success w-100" style="display:none;">Baixar PDF</button>
         </form>
     </div>
 
@@ -118,7 +127,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalConfirmacaoLabel">Confirmação</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     Solicitação de materiais finalizada com sucesso!
@@ -131,8 +140,35 @@
         </div>
     </div>
 
+    <!-- Modal de Ajuda para Pesquisa de Materiais -->
+    <div class="modal fade" id="modalAjudaMaterial" tabindex="-1" aria-labelledby="modalAjudaMaterialLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalAjudaMaterialLabel">Ajuda: Como pesquisar materiais</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div> 
+          <div class="modal-body">
+            <ul class="list-unstyled">
+                <li>1. Digite parte da descrição ou uma combinação de palavras no campo de busca e clique em <strong>Pesquisar</strong> 
+                    use o botão <strong>limpar</strong> para realizar outra pesquisa.</li>
+                <li>2. Clique em <strong>Selecionar</strong> para adicionar um material à lista.</li>
+                <li>3. Para cada item selecionado, preencha a <strong>quantidade</strong> e selecione a <strong>unidade</strong>.</li>
+                <li>4. Se necessário, remova itens da lista usando o botão <strong>Remover</strong>.</li>
+                <li>5. Preencha todos os campos obrigatórios do formulário.</li>
+                <li>6. Clique em <strong>Finalizar Seleção</strong> para enviar e gerar o PDF.</li>
+                <li>7. Após a geração, clique no botão <strong>Baixar PDF</strong> para fazer o download do documento.</li>
+              </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Entendi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <footer>
-        <p>© 2025 | Desenvolvido por Diego Tamiozzo · Versão 1.1 Beta</p>
+        <p>© 2025 | Desenvolvido por Diego Tamiozzo · Versão 1.2 Beta</p>
     </footer>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
