@@ -43,7 +43,7 @@ header img {
     margin: 0 auto;
     padding: 20px;
     background-color: var(--cor-container);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     border-radius: 12px;
     transition: box-shadow 0.3s ease; 
 }
@@ -61,7 +61,7 @@ fieldset {
     border-radius: 10px;
     margin-bottom: 1.5rem;
     background-color: var(--cor-fieldset);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); 
 }
 
 #resultados {
@@ -125,6 +125,7 @@ select {
     font-size: 1rem;
     width: 100%;
     box-sizing: border-box;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.4);
 }
 
 /* Estilo para campos obrigatórios com erro */
